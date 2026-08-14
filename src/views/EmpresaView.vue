@@ -194,7 +194,7 @@ onMounted(() => {
     <div v-if="validando" class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 style-overlay">
       <div class="text-center">
         <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2 fw-bold">Validando RIF...</p>
+        <p class="mt-2 fw-bold">Validando datos...</p>
       </div>
     </div>
 
@@ -206,7 +206,7 @@ onMounted(() => {
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-5 mb-3">
-              <label class="form-label fw-bold">RIF y AB</label>
+              <label class="form-label fw-bold">RIF y Número de Proveedor</label>
               <div class="input-group">
                 <input 
                   v-model="empresa.rif" 
