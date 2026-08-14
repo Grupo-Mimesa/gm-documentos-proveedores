@@ -60,6 +60,7 @@ const cargarDatosProveedor = async () => {
       }
     })
 
+    empresaStore.limpiarEmpresa();
     empresaStore.setEmpresa(empresa.value);
   } catch (error) {
     errorMensaje.value = 'No se pudo obtener la información de la empresa.';

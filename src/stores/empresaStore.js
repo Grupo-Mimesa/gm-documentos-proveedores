@@ -9,7 +9,7 @@ export const empresaStore = reactive({
     rif: '',
     razonSocial: '',
     ab: '',
-    tipo: ''
+    servicio: ''
   },
 
   // Método para actualizar los datos y guardarlos
@@ -24,7 +24,7 @@ export const empresaStore = reactive({
       rif: '',
       razonSocial: '',
       ab: '',
-      tipo: ''
+      servicio: ''
     }
     localStorage.removeItem('empresaActiva')
   }
