@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { empresaStore } from '@/stores/empresaStore.js'
 import { obtenerProveedor, guardarProveedor } from '@/services/apiService';
 import { obtenerEstadoDoc } from '@/utils/obtenerEstadoDocumento.js';
+import { aBooleano } from '@/utils/formatters'
 import { TIPO_SERVICIOS, TIPO_DOCUMENTOS_EMPRESA } from '@/constants';
 
 const guardando = ref(false);
@@ -10,15 +11,11 @@ const validando = ref(false);
 const errorMensaje = ref('');
 
 const empresa = ref({
-  razonSocial: '',
   rif: '',
+  razonSocial: '',
   ab: '',
   servicio: '',
-  documentos: {
-    rifDoc: { id: null, archivo: null, tipo: 'RIF', fechaEmision: '', fechaVencimiento: '', cargado: false, actualizar: true, mode: 'new' },
-    registroMercantil: { id: null, archivo: null, tipo: 'REGISTRO MERCANTIL', fechaEmision: '', fechaVencimiento: '', cargado: false, actualizar: true, mode: 'new' }, // Sin fecha de vencimiento
-    ciRepresentante: { id: null, archivo: null, tipo: 'C.I REPRESENTANTE LEGAL', fechaEmision: '', fechaVencimiento: '', cargado: false, actualizar: true, mode: 'new' }
-  },
+  documentos: {},
   documentos2: []
 })
 
@@ -27,6 +24,26 @@ const CONFIG_DOCUMENTOS = computed(() => {
     return doc.service.includes(empresa.value.servicio)
   })
 })
+
+const actualizarDocumentos = () => {
+  empresa.value.documentos2 = CONFIG_DOCUMENTOS.value.map(cfg => {
+    const docExistente = empresa.value.documentos2?.find(d => d.tipoDocumento === cfg.Value)
+    return {
+      id: docExistente?.id || null,
+      tipoDocumento: cfg.Value,
+      fEmision: docExistente?.fEmision || '',
+      fVencimiento: cfg.requiereVencimiento ? (docExistente?.fVencimiento || '') : null,
+      cargado: aBooleano(docExistente?.cargado) ?? false,
+      actualizar: aBooleano(docExistente?.actualizar) ?? true,
+      mode: docExistente?.mode || 'new',
+      //urlArchivo: docExistente?.urlArchivo || '',
+      archivo: {
+        base64: '',
+        nombre: ''
+      }
+    }
+  })
+}
 
 const cargarDatosProveedor = async () => {
   if (!empresa.value.rif) return;
@@ -42,23 +59,7 @@ const cargarDatosProveedor = async () => {
     
     empresa.value = { ...empresa.value, ...data };
     
-    empresa.value.documentos2 = CONFIG_DOCUMENTOS.value.map(cfg => {
-      const docExistente = empresa.value.documentos2?.find(d => d.tipoDocumento === cfg.Value)
-      return {
-        id: docExistente?.id || null,
-        tipoDocumento: cfg.Value,
-        fEmision: docExistente?.fEmision || '',
-        fVencimiento: cfg.requiereVencimiento ? (docExistente?.fVencimiento || '') : null,
-        cargado: docExistente?.cargado || false,
-        actualizar: docExistente?.actualizar || true,
-        mode: docExistente?.mode || 'new',
-        //urlArchivo: docExistente?.urlArchivo || '',
-        archivo: {
-          base64: '',
-          nombre: ''
-        }
-      }
-    })
+    actualizarDocumentos();
 
     empresaStore.limpiarEmpresa();
     empresaStore.setEmpresa(empresa.value);
@@ -129,17 +130,16 @@ const validarFormulario = () => {
     return false
   }
 
-  for (const docKey in empresa.value.documentos) {
-    const doc = empresa.value.documentos[docKey]
+  empresa.value.documentos2.forEach((doc) => {
     if (!doc.cargado && !doc.archivo) {
-      alert(`Por favor cargue el documento: ${docKey}`)
+      alert(`Por favor cargue el documento: ${doc.label}`)
       return false
     }
-    if (!doc.fechaEmision || (!doc.fechaVencimiento && docKey !== 'registroMercantil')) {
-      alert(`Por favor complete las fechas para el documento: ${docKey}`)
+    if (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento))) {
+      alert(`Por favor complete las fechas para el documento: ${doc.label}`)
       return false
     }
-  }
+  })
 
   return true
 }
@@ -168,6 +168,9 @@ const guardarEmpresa = async () => {
     //const payloadParaEnviar = prepararPayload(empresa.value);
     const respuesta = await guardarProveedor(empresa.value);
     alert('Datos de la empresa guardados exitosamente')
+
+    empresaStore.limpiarEmpresa();
+    empresaStore.setEmpresa(empresa.value);
   } catch (error) {
     console.error(error)
     alert('Ocurrió un error al guardar los datos de la empresa')
@@ -180,6 +183,10 @@ onMounted(() => {
   if (empresaStore.datos) {
     empresa.value = { ...empresa.value, ...empresaStore.datos }
   }
+})
+
+watch(() => empresa.value.servicio, () => {
+  actualizarDocumentos()
 })
 </script>
 

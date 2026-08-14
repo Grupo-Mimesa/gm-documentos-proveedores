@@ -7,7 +7,8 @@ import {
   guardarEmpleado as apiGuardarEmpleado, 
   eliminarEmpleado as apiEliminarEmpleado
 } from '@/services/apiService.js'
-import { obtenerEstadoDoc } from '@/utils/obtenerEstadoDocumento.js';
+import { obtenerEstadoDoc } from '@/utils/obtenerEstadoDocumento.js'
+import { aBooleano } from '@/utils/formatters'
 import { TIPO_DOCUMENTOS_EMPLEADOS } from '@/constants'
 
 const CONFIG_DOCUMENTOS = TIPO_DOCUMENTOS_EMPLEADOS.filter(doc => {
@@ -133,8 +134,8 @@ const editarEmpleado = (emp) => {
       tipoDocumento: cfg.Value,
       fEmision: docExistente?.fEmision || '',
       fVencimiento: cfg.requiereVencimiento ? (docExistente?.fVencimiento || '') : null,
-      cargado: docExistente?.cargado ?? false,
-      actualizar: docExistente?.actualizar ?? true,
+      cargado: aBooleano(docExistente?.cargado) ?? false,
+      actualizar: aBooleano(docExistente?.actualizar) ?? true,
       mode: docExistente?.mode ?? 'new',
       //urlArchivo: docExistente?.urlArchivo || '',
       archivo: {
