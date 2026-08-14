@@ -1,33 +1,26 @@
 import { reactive } from 'vue'
 
-// Cargar estado inicial desde localStorage si existe
-const empresaGuardada = JSON.parse(localStorage.getItem('empresaActiva') || 'null')
+const STORAGE_KEY = 'empresaActiva'
+
+const estadoInicial = {
+  rif: '',
+  razonSocial: '',
+  ab: '',
+  servicio: '',
+  documentos2: []
+}
+
+const empresaGuardada = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
 
 export const empresaStore = reactive({
-  // Datos de la empresa activa
-  datos: empresaGuardada || {
-    rif: '',
-    razonSocial: '',
-    ab: '',
-    servicio: '',
-    documentos2: []
-  },
+  datos: empresaGuardada || estadoInicial,
 
-  // Método para actualizar los datos y guardarlos
   setEmpresa(nuevosDatos) {
     this.datos = { ...this.datos, ...nuevosDatos }
-    localStorage.setItem('empresaActiva', JSON.stringify(this.datos))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.datos))
   },
 
-  // Método para limpiar los datos (si la empresa cierra sesión o cambia)
   limpiarEmpresa() {
-    this.datos = {
-      rif: '',
-      razonSocial: '',
-      ab: '',
-      servicio: '',
-      documentos2: []
-    }
-    localStorage.removeItem('empresaActiva')
+    localStorage.removeItem(STORAGE_KEY)
   }
 })
