@@ -173,19 +173,20 @@ const guardarEmpleado = async () => {
   guardando.value = true
 
   const payload = { ...formEmpleado }
+  payload.nombre = payload.nombre.trim().toUpperCase()
   payload.documentos = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
 
   try {
     await apiGuardarEmpleado({payload: payload})
 
     alert('Empleado guardado correctamente.')
-    cerrarModal()
-    cargarEmpleados()
   } catch (err) {
     console.error(err)
     alert('Ocurrió un error al guardar.')
   } finally {
     guardando.value = false
+    cerrarModal()
+    cargarEmpleados()
   }
 }
 
@@ -205,7 +206,7 @@ watch(() => empresaStore.datos?.rif, () => {
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h2><i class="bi bi-person me-2"></i>Gestión de Empleados</h2>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEmpleado">
+      <button class="btn btn-success" @click="abrirModalNuevo">
         <i class="bi bi-plus-circle me-1"></i> Registrar Empleado
       </button>
     </div>
@@ -274,7 +275,7 @@ watch(() => empresaStore.datos?.rif, () => {
               <div class="row g-3 mb-4">
                 <div class="col-md-4">
                   <label class="form-label fw-bold">Cédula de Identidad</label>
-                  <input v-model="formEmpleado.cedula" type="text" class="form-control" placeholder="V-00000000" required />
+                  <input v-model="formEmpleado.cedula" type="number" class="form-control" placeholder="12345678" required />
                 </div>
                 <div class="col-md-4">
                   <label class="form-label fw-bold">Nombre</label>
