@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'gilroy-light';
+  src: url('./assets/fonts/Gilroy-Light.ttf') format('truetype');
+}
+
+* {
+  font-family: 'gilroy-light', sans-serif;
+}
