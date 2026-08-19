@@ -10,7 +10,7 @@
             <span class="navbar-text fs-5">
               <strong>Documentos de Proveedores</strong>
             </span>
-            <ul v-if="empresaStore.datos.razonSocial" class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul v-if="empresaStore.datos.razonSocial && empresaStore.datos.servicio" class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <router-link class="nav-link" active-class="active" to="/empresa">
                   Empresa
