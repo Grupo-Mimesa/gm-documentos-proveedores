@@ -162,6 +162,7 @@ const guardarEmpresa = async () => {
   guardando.value = true
   try {
     //const payloadParaEnviar = prepararPayload(empresa.value);
+    empresa.value.documentos2 = empresa.value.documentos2.filter(doc => doc.cargado || doc.archivo.base64)
     const respuesta = await guardarProveedor(empresa.value);
     alert('Datos de la empresa guardados exitosamente')
 
@@ -285,7 +286,7 @@ watch(() => empresa.value.servicio, () => {
                   </span>
                 </div>
                 <input v-if="!doc.cargado"
-                  type="file" class="form-control form-control-sm mb-2" accept=".pdf,.png,.jpg" @change="procesarArchivo($event, 'rifDoc')" />
+                  type="file" class="form-control form-control-sm mb-2" accept=".pdf,.png,.jpg" @change="procesarArchivo($event, index)" />
                 <div v-else class="alert alert-success py-2 mb-2 d-flex justify-content-between align-items-center">
                   <span class="small">Archivo cargado</span>
                 </div>
