@@ -4,7 +4,7 @@
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="#" target="_blank" rel="noopener noreferrer">
-            <img src="../assets/logo-grupo-mimesa.png" alt="Grupo Mimesa">
+            <img src="../assets/log-grupo-mimesa.png" alt="Grupo Mimesa">
           </a>
           <div class="collapse navbar-collapse" id="navbarText">
             <span class="navbar-text fs-5">
