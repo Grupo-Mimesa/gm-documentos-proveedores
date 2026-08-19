@@ -265,6 +265,12 @@ watch(() => empresa.value.servicio, () => {
         </div>
         <div class="card-body">
           <div class="row g-4">
+
+            <div v-if="empresa.documentos2.length === 0" class="col-12">
+              <div class="alert alert-warning mb-0" role="alert">
+                Seleccione un tipo de servicio para ver los documentos requeridos.
+              </div>
+            </div>
             
             <div
               v-for="(doc, index) in empresa.documentos2"
@@ -279,14 +285,14 @@ watch(() => empresa.value.servicio, () => {
                   </span>
                 </div>
                 <input v-if="!doc.cargado"
-                  type="file" class="form-control form-control-sm mb-2" accept=".pdf,.png,.jpg" @change="procesarArchivo($event, 'rifDoc')" required />
+                  type="file" class="form-control form-control-sm mb-2" accept=".pdf,.png,.jpg" @change="procesarArchivo($event, 'rifDoc')" />
                 <div v-else class="alert alert-success py-2 mb-2 d-flex justify-content-between align-items-center">
                   <span class="small">Archivo cargado</span>
                 </div>
                 <label class="form-label text-muted small mb-1">F. Emisión</label>
-                <input type="date" class="form-control form-control-sm mb-2" v-model="doc.fEmision" required :readonly="doc.cargado" />
+                <input type="date" class="form-control form-control-sm mb-2" v-model="doc.fEmision" :readonly="doc.cargado" />
                 <label class="form-label text-muted small mb-1">F. Vencimiento</label>
-                <input v-if="requiereVencimiento(doc.tipoDocumento)" type="date" class="form-control form-control-sm" v-model="doc.fVencimiento" required :readonly="doc.cargado" />
+                <input v-if="requiereVencimiento(doc.tipoDocumento)" type="date" class="form-control form-control-sm" v-model="doc.fVencimiento" :readonly="doc.cargado" />
                 <input v-else type="text" class="form-control form-control-sm" value="No Aplica" disabled />
                 <button v-if="doc.cargado" 
                   type="button" 
