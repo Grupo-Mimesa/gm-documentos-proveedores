@@ -125,17 +125,13 @@ const procesarArchivo = (event, docKey) => {
 }
 
 const validarFormulario = () => {
-  if (!empresa.value.razonSocial || !empresa.value.rif) {
-    alert('Por favor complete todos los campos obligatorios.')
+  if (!empresa.value.razonSocial || !empresa.value.rif || !empresa.value.ab || !empresa.value.servicio) {
+    alert('Por favor complete la información general.')
     return false
   }
 
   empresa.value.documentos2.forEach((doc) => {
-    if (!doc.cargado && !doc.archivo) {
-      alert(`Por favor cargue el documento: ${doc.label}`)
-      return false
-    }
-    if (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento))) {
+    if (doc.actualizar && doc.archivo && (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento)))) {
       alert(`Por favor complete las fechas para el documento: ${doc.label}`)
       return false
     }
