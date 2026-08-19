@@ -7,27 +7,27 @@
             <img src="https://grupomimesa.com/wp-content/uploads/2021/11/log-grupo-mimesa.png" alt="Grupo Mimesa">
           </a>
           <div class="collapse navbar-collapse" id="navbarText">
-          <span class="navbar-text fs-5">
-            <strong>Documentos de Proveedores</strong>
-          </span>
-          <ul v-if="empresaStore.datos.razonSocial" class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link" active-class="active" to="/empresa">
-                Empresa
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" active-class="active" to="/empleados">
-                Empleados
-              </router-link>
-            </li>
-            <li v-if="empresaStore.datos.servicio==='Transporte'" class="nav-item">
-              <router-link class="nav-link" active-class="active" to="/vehiculos">
-                Vehículos
-              </router-link>
-            </li>
-          </ul>
-        </div>
+            <span class="navbar-text fs-5">
+              <strong>Documentos de Proveedores</strong>
+            </span>
+            <ul v-if="empresaStore.datos.razonSocial" class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <router-link class="nav-link" active-class="active" to="/empresa">
+                  Empresa
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" active-class="active" to="/empleados">
+                  Empleados
+                </router-link>
+              </li>
+              <li v-if="empresaStore.datos.servicio==='Transporte'" class="nav-item">
+                <router-link class="nav-link" active-class="active" to="/vehiculos">
+                  Vehículos
+                </router-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
