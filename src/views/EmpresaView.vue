@@ -97,10 +97,10 @@ const estructurarDocumentosVacios = () => {
   }))
 }
 
-const actuazlizarArchivo = (index) => {
+const actualizarArchivo = (index) => {
   empresa.value.documentos2[index].actualizar = true;
   empresa.value.documentos2[index].cargado = false;
-  empresa.value.documentos2[index].archivo = null;
+  empresa.value.documentos2[index].archivo = { nombre: '', base64: '' };
   empresa.value.documentos2[index].fEmision = '';
   empresa.value.documentos2[index].fVencimiento = '';
 }
@@ -317,7 +317,7 @@ watch(() => empresa.value.servicio, () => {
                   <button v-if="doc.cargado" 
                     type="button" 
                     class="btn btn-secondary py-1 px-2"
-                    @click="actuazlizarArchivo(index)"
+                    @click="actualizarArchivo(index)"
                   >
                     <i class="bi bi-pencil me-1"></i>
                   </button>

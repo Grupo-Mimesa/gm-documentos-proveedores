@@ -86,10 +86,10 @@ const estructurarDocumentosVacios = () => {
   }))
 }
 
-const actuazlizarArchivo = (index) => {
+const actualizarArchivo = (index) => {
   formEmpleado.documentos[index].actualizar = true;
   formEmpleado.documentos[index].cargado = false;
-  formEmpleado.documentos[index].archivo = null;
+  formEmpleado.documentos[index].archivo = { nombre: '', base64: '' };
   formEmpleado.documentos[index].fEmision = '';
   formEmpleado.documentos[index].fVencimiento = '';
 }
@@ -174,21 +174,33 @@ const eliminarEmpleado = async (emp) => {
   }
 }
 
-const guardarEmpleado = async () => {
+const validarFormulario = () => {
   if (!formEmpleado.cedula || !formEmpleado.nombre) {
     alert('Por favor ingrese la cédula y el nombre completo.')
-    return
+    return false
   }
+
+  formEmpleado.documentos.forEach((doc) => {
+    if (doc.actualizar && doc.archivo && (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento)))) {
+      alert(`Por favor complete las fechas para el documento: ${obtenerEtiquetaDoc(doc.tipoDocumento)}`)
+      return false
+    }
+  })
+
+  return true
+}
+
+const guardarEmpleado = async () => {
+  if (!validarFormulario()) return;
   
   guardando.value = true
 
   const payload = { ...formEmpleado }
   payload.nombre = payload.nombre.trim().toUpperCase()
-  payload.documentos = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
+  payload.documentos = payload.documentos.filter(doc => doc.archivo.base64)
 
   try {
     await apiGuardarEmpleado({payload: payload})
-
     alert('Empleado guardado correctamente.')
   } catch (err) {
     console.error(err)
@@ -269,6 +281,14 @@ watch(() => empresaStore.datos?.rif, () => {
             </tbody>
           </table>
         </div>
+        <div v-if="cargando" class="text-center p-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+        <div v-if="!cargando && empleados.length === 0" class="text-center p-3 text-muted">
+          No hay empleados registrados.
+        </div>
       </div>
     </div>
 
@@ -344,7 +364,7 @@ watch(() => empresaStore.datos?.rif, () => {
                         <button v-if="doc.cargado" 
                           type="button" 
                           class="btn btn-secondary py-1 px-2"
-                          @click="actuazlizarArchivo(index)"
+                          @click="actualizarArchivo(index)"
                         >
                           <i class="bi bi-pencil me-1"></i>
                         </button>
@@ -357,6 +377,7 @@ watch(() => empresaStore.datos?.rif, () => {
                             type="date" 
                             class="form-control form-control-sm"
                             v-model="doc.fEmision"
+                            :readonly="doc.cargado"
                           />
                         </div>
                         <div class="col-6" v-if="requiereVencimiento(doc.tipoDocumento)">
@@ -365,6 +386,7 @@ watch(() => empresaStore.datos?.rif, () => {
                             type="date" 
                             class="form-control form-control-sm"
                             v-model="doc.fVencimiento"
+                            :readonly="doc.cargado"
                           />
                         </div>
                       </div>
