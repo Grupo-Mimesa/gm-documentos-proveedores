@@ -66,6 +66,7 @@ const estadoDocumentacion = (cedula) => {
 }
 
 const obtenerEtiquetaDoc = (tipo) => CONFIG_DOCUMENTOS.find(c => c.Value === tipo)?.label || tipo
+const obtenerNotaDoc = (tipo) => CONFIG_DOCUMENTOS.find(c => c.Value === tipo)?.note || ''
 const requiereVencimiento = (tipo) => CONFIG_DOCUMENTOS.find(c => c.Value === tipo)?.requiereVencimiento ?? true
 
 // Inicializar un arreglo de documentos vacío con la estructura por defecto
@@ -83,6 +84,14 @@ const estructurarDocumentosVacios = () => {
     }
     //urlArchivo: ''
   }))
+}
+
+const actuazlizarArchivo = (index) => {
+  formEmpleado.documentos[index].actualizar = true;
+  formEmpleado.documentos[index].cargado = false;
+  formEmpleado.documentos[index].archivo = null;
+  formEmpleado.documentos[index].fEmision = '';
+  formEmpleado.documentos[index].fVencimiento = '';
 }
 
 const procesarArchivo = (event, index) => {
@@ -248,6 +257,7 @@ watch(() => empresaStore.datos?.rif, () => {
                     <i class="bi bi-pencil"></i>
                   </button>
                   <button 
+                    v-show="false"
                     class="btn btn-sm btn-outline-danger"
                     title="Eliminar Empleado"
                     @click="eliminarEmpleado(c)"
@@ -292,20 +302,27 @@ watch(() => empresaStore.datos?.rif, () => {
                   :key="doc.tipoDocumento"
                 >
                   <div class="card h-100 shadow-sm border">
-                    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-                      <span>{{ obtenerEtiquetaDoc(doc.tipoDocumento) }}</span>
-                      <!--<span v-if="!requiereVencimiento(doc.tipoDocumento)" class="badge bg-info text-dark">
-                        Sin Vencimiento
-                      </span>-->
+                    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-start">
+                      <div class="d-flex align-items-start gap-2">
+                        <span>{{ obtenerEtiquetaDoc(doc.tipoDocumento) }}</span>
+                        <i
+                          v-if="obtenerNotaDoc(doc.tipoDocumento)"
+                          class="bi bi-info-circle-fill text-primary"
+                          role="button"
+                          :title="obtenerNotaDoc(doc.tipoDocumento)"
+                          style="cursor: pointer; font-size: 0.9rem;"
+                        ></i>
+                      </div>
+
                       <span class="badge" :class="obtenerEstadoDoc(doc.fVencimiento).clase">
                         {{ obtenerEstadoDoc(doc.fVencimiento).texto }}
                       </span>
                     </div>
                     <div class="card-body">
-                      <div v-if="!doc.cargado" class="mb-3">
+                      <div v-if="!doc.cargado" class="mb-2">
                         <label class="form-label small text-muted">
                           Archivo (PDF o Imagen)
-                          <span v-if="doc.urlArchivo" class="text-success ms-1">✓ Registrado</span>
+                          <!-- <span v-if="doc.urlArchivo" class="text-success ms-1">✓ Registrado</span> -->
                         </label>
                         <input 
                           type="file" 
@@ -313,13 +330,24 @@ watch(() => empresaStore.datos?.rif, () => {
                           accept=".pdf,.png,.jpg,.jpeg"
                           @change="procesarArchivo($event, index)"
                         />
-                        <small v-if="doc.archivo.nombre" class="text-muted d-block mt-1">
+                        <small v-if="doc.archivo?.nombre" class="text-muted d-block mt-1">
                           Archivo seleccionado: {{ doc.archivo.nombre }}
                         </small>
                       </div>
 
-                      <div v-else class="alert alert-success py-2 mb-2 d-flex justify-content-between align-items-center">
-                        <span class="small">Archivo cargado</span>
+                      <div v-else class="py-1 mb-2 d-flex justify-content-between align-items-center gap-2">
+                        <div class="alert alert-success d-flex align-items-center mb-0 py-1 px-2 gap-1 w-100" role="alert">
+                          <i class="bi bi-check-circle-fill"></i>
+                          <span class="small">Archivo cargado</span>
+                        </div>
+                        
+                        <button v-if="doc.cargado" 
+                          type="button" 
+                          class="btn btn-secondary py-1 px-2"
+                          @click="actuazlizarArchivo(index)"
+                        >
+                          <i class="bi bi-pencil me-1"></i>
+                        </button>
                       </div>
 
                       <div class="row g-2">

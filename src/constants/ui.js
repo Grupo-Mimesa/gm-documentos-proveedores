@@ -4,15 +4,16 @@ export const TIPO_PROVEEDOR = [
 ]
 
 export const TIPO_SERVICIOS = [
-  "Fijos",
-  "Eventuales",
-  "Ambientales",
-  "Transporte",
-  "Emergencia"
+  { value: "Fijos", label: "Fijos" },
+  { value: "Eventuales", label: "Eventuales" },
+  { value: "Ambientales Peligrosos", label: "Ambientales - Desechos Peligrosos" },
+  { value: "Ambientales No Peligrosos", label: "Ambientales - Desechos No Peligrosos" },
+  { value: "Transporte", label: "Transporte" },
+  { value: "Emergencia", label: "Emergencia" }
 ]
 
 export const TIPO_DOCUMENTOS_EMPRESA = [
-  { service: ['Fijos', 'Eventuales', 'Ambientales', 'Transporte', 'Emergencia'], label: 'Registro de Información Fiscal (RIF)', Value: 'RIF', requiereVencimiento: true },
+  { service: ['Fijos', 'Eventuales', 'Ambientales Peligrosos', 'Ambientales No Peligrosos', 'Transporte', 'Emergencia'], label: 'RIF', Value: 'RIF', note: 'Registro de Información Fiscal', requiereVencimiento: true },
   { service: ['Fijos', 'Eventuales', 'Transporte'], label: 'Cédula del Representante Legal', Value: 'C.I REPRESENTANTE LEGAL', requiereVencimiento: true },
   { service: ['Fijos', 'Eventuales', 'Transporte'], label: 'Registro Mercantil', Value: 'REGISTRO MERCANTIL', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Inscripción ante el IVSS', Value: 'IVSS', note: 'Forma 1401', requiereVencimiento: false },
@@ -33,6 +34,22 @@ export const TIPO_DOCUMENTOS_EMPRESA = [
   { service: ['Fijos'], label: 'Planilla de Registro de Comité de Seguridad y Salud Laboral', Value: 'PLANILLA DE REGISTRO DE COMITÉ DE SEGURIDAD Y SALUD LABORAL', note:'', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Gestión Mensual de Seguridad y Salud Laboral', Value: 'GESTIÓN MENSUAL DE SEGURIDAD Y SALUD LABORAL', note:'Formato Excel', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Listado del Personal', Value: 'LISTADO DEL PERSONAL', note:'Nómina del personal actualizada donde indique; Nombre y Apellido, Cédula de Identidad, Cargo y Fecha de Nacimiento de cada trabajador) autorizado para ingresar a Grupo Mimesa', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'RACDA para manejador y/o transporte y/o tratamiento de materiales peligrosos.', Value: 'RACDA PARA MANEJADOR Y/O TRANSPORTE Y/O TRATAMIENTO DE MATERIALES PELIGROSOS.', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'RACDA de aliados comerciales en caso de que aplique', Value: 'RACDA DE ALIADOS COMERCIALES EN CASO DE QUE APLIQUE', note:'Autorización de los vehículos para realizar el transporte de desechos peligrosos/no peligrosos ante la autoridad competente', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Planes de tratamientos aplicados a cada desecho', Value: 'PLANES DE TRATAMIENTOS APLICADOS A CADA DESECHO', note:'', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'Permiso del MINEC como manejador de material reciclable o común', Value: 'PERMISO DEL MINEC COMO MANEJADOR DE MATERIAL RECICLABLE O COMÚN', note:'Registro RENMA', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'Contrato y convenios con los Vertederos aplicables', Value: 'CONTRATO Y CONVENIOS CON LOS VERTEDEROS APLICABLES', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos', 'Ambientales No Peligrosos'], label: 'Hoja de seguimiento', Value: 'HOJA DE SEGUIMIENTO', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Manifiesto de carga', Value: 'MANIFIESTO DE CARGA', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Autorización para disposición final', Value: 'AUTORIZACIÓN PARA DISPOSICIÓN FINAL', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Contrato con empresa incineradora si aplica', Value: 'CONTRATO CON EMPRESA INCINERADORA SI APLICA', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Seguro Ambiental', Value: 'SEGURO AMBIENTAL', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Capacitación del personal para la recolección', Value: 'CAPACITACIÓN DEL PERSONAL PARA LA RECOLECCIÓN', note:'', requiereVencimiento: false },
+  { service: ['Ambientales Peligrosos'], label: 'Plan de emergencia en caso de contacto y/o derrame accidental', Value: 'PLAN DE EMERGENCIA EN CASO DE CONTACTO Y/O DERRAME ACCIDENTAL', note:'', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'Constancias, Licencias o certificados de tratamiento de recuperación de materiales residuales o disposición final', Value: 'CONSTANCIAS, LICENCIAS O CERTIFICADOS DE TRATAMIENTO DE RECUPERACIÓN DE MATERIALES RESIDUALES O DISPOSICIÓN FINAL', note:'', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'ROTC', Value: 'ROTC', note:'Registro como operadores de transporte de carga', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'Permiso RUNPA emitido por CORPOEZ', Value: 'PERMISO RUNPA EMITIDO POR CORPOEZ', note:'Para los casos de Material Estratégico (Chatarra)', requiereVencimiento: false },
+  { service: ['Ambientales No Peligrosos'], label: 'Guía de Movilización', Value: 'GUÍA DE MOVILIZACIÓN', note:'Para los casos de Material Estratégico (Chatarra)', requiereVencimiento: false },
   //{ service: ['Fijos'], label: '', Value: '', requiereVencimiento: false },
 ]
 
@@ -40,7 +57,7 @@ export const TIPO_DOCUMENTOS_EMPLEADOS = [
   { key: 'cartaExoneracion', type: 'Contratista', 
     service: ['Emergencia'], label: 'Carta de Exoneración de Responsabilidad y Compromiso', Value: 'Carta de Exoneración de Responsabilidad y Compromiso', requiereVencimiento: false },
   { key: 'cedulaDoc', type: 'Todos', 
-    service: ['Fijos', 'Eventuales', 'Ambientales', 'Transporte', 'Emergencia'], label: 'Cédula de Identidad', Value: 'Cedula de identidad', requiereVencimiento: true },
+    service: ['Fijos', 'Eventuales', 'Ambientales Peligrosos', 'Ambientales No Peligrosos', 'Transporte', 'Emergencia'], label: 'Cédula de Identidad', Value: 'Cedula de identidad', requiereVencimiento: true },
   { key: 'ivss', type: 'Contratista', 
     service: ['Fijos', 'Eventuales'], label: 'Constancia de Registro de Trabajador ante el Seguro Social (IVSS)14-02', Value: 'Constancia de registro de trabajador ante el seguro social', note: '', requiereVencimiento: true },
   { key: 'examenMedico', type: 'Contratista', 
@@ -72,7 +89,9 @@ export const TIPO_DOCUMENTOS_EMPLEADOS = [
 ]
 
 export const TIPO_DOCUMENTOS_VEHICULOS = [
-  { key: 'seguroVehiculo', type: 'Transporte', service: ['Transporte'], label: 'Seguro del Vehículo', Value: 'Seguro del vehículo', requiereVencimiento: true },
-  { key: 'respCivil', type: 'Transporte', service: ['Transporte'], label: 'Responsabilidad Civil del Vehículo', Value: 'RCV', requiereVencimiento: true },
-  { key: 'planMantenimiento', type: 'Transporte', service: ['Transporte'], label: 'Plan de Mantenimiento del Vehículo', Value: 'Plan de mantenimiento del vehículo', requiereVencimiento: true }
+  { service: ['Transporte'], label: 'Seguro del Vehículo', Value: 'Seguro del vehículo', requiereVencimiento: true },
+  { service: ['Transporte'], label: 'Responsabilidad Civil del Vehículo', Value: 'RCV', requiereVencimiento: true },
+  { service: ['Transporte'], label: 'Plan de Mantenimiento del Vehículo', Value: 'Plan de mantenimiento del vehículo', requiereVencimiento: true },
+
+  { service: ['Ambientales No Peligrosos'], label: 'Autorización para el transporte de desechos', Value: 'AUTORIZACIÓN PARA EL TRANSPORTE DE DESECHOS', note:'Autorización de los vehículos para realizar el transporte de desechos peligrosos/no peligrosos ante la autoridad competente', requiereVencimiento: false },
 ]

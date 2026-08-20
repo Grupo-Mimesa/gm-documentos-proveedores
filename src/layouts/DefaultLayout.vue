@@ -21,7 +21,7 @@
                   Empleados
                 </router-link>
               </li>
-              <li v-if="empresaStore.datos.servicio==='Transporte'" class="nav-item">
+              <li class="nav-item">
                 <router-link class="nav-link" active-class="active" to="/vehiculos">
                   Vehículos
                 </router-link>

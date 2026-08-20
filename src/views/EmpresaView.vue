@@ -35,7 +35,7 @@ const actualizarDocumentos = () => {
       fVencimiento: cfg.requiereVencimiento ? (docExistente?.fVencimiento || '') : null,
       cargado: aBooleano(docExistente?.cargado) ?? false,
       actualizar: aBooleano(docExistente?.actualizar) ?? true,
-      mode: docExistente?.mode || 'new',
+      mode: docExistente?.mode ?? 'new',
       //urlArchivo: docExistente?.urlArchivo || '',
       archivo: {
         base64: '',
@@ -77,6 +77,7 @@ const cargarDatosProveedor = async () => {
 };
 
 const obtenerEtiquetaDoc = (tipo) => CONFIG_DOCUMENTOS.value.find(c => c.Value === tipo)?.label || tipo
+const obtenerNotaDoc = (tipo) => CONFIG_DOCUMENTOS.value.find(c => c.Value === tipo)?.note || ''
 const requiereVencimiento = (tipo) => CONFIG_DOCUMENTOS.value.find(c => c.Value === tipo)?.requiereVencimiento ?? true
 
 const estructurarDocumentosVacios = () => {
@@ -117,7 +118,7 @@ const procesarArchivo = (event, docKey) => {
   const reader = new FileReader()
   reader.readAsDataURL(file)
   reader.onload = (e) => {
-    empresa.value.documentos[docKey].archivo = {
+    empresa.value.documentos2[docKey].archivo = {
       nombre: file.name,
       base64: e.target.result.split(',')[1]
     }
@@ -132,7 +133,7 @@ const validarFormulario = () => {
 
   empresa.value.documentos2.forEach((doc) => {
     if (doc.actualizar && doc.archivo && (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento)))) {
-      alert(`Por favor complete las fechas para el documento: ${doc.label}`)
+      alert(`Por favor complete las fechas para el documento: ${obtenerEtiquetaDoc(doc.tipoDocumento)}`)
       return false
     }
   })
@@ -165,9 +166,8 @@ const guardarEmpresa = async () => {
     empresa.value.documentos2 = empresa.value.documentos2.filter(doc => doc.cargado || doc.archivo.base64)
     const respuesta = await guardarProveedor(empresa.value);
     alert('Datos de la empresa guardados exitosamente')
-
-    empresaStore.limpiarEmpresa();
-    empresaStore.setEmpresa(empresa.value);
+    
+    cargarDatosProveedor()
   } catch (error) {
     console.error(error)
     alert('Ocurrió un error al guardar los datos de la empresa')
@@ -248,7 +248,7 @@ watch(() => empresa.value.servicio, () => {
               <label class="form-label fw-bold">Tipo de Servicio</label>
               <select v-model="empresa.servicio" class="form-select" required :disabled="!empresa.razonSocial">
                 <option value="" disabled>Seleccione un tipo</option>
-                <option v-for="tipo in TIPO_SERVICIOS" :key="tipo" :value="tipo">{{ tipo }}</option>
+                <option v-for="tipo in TIPO_SERVICIOS" :key="tipo.value" :value="tipo.value">{{ tipo.label }}</option>
               </select>
           </div>
 
@@ -279,29 +279,55 @@ watch(() => empresa.value.servicio, () => {
               class="col-md-4"
             >
               <div class="border rounded p-3 h-100 bg-light">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h6 class="fw-bold mb-0">{{ obtenerEtiquetaDoc(doc.tipoDocumento) }}</h6>
+                <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
+                  <div class="d-flex align-items-start gap-2">
+                    <h6 class="fw-bold mb-0">{{ obtenerEtiquetaDoc(doc.tipoDocumento) }}</h6>
+                    <i
+                      v-if="obtenerNotaDoc(doc.tipoDocumento)"
+                      class="bi bi-info-circle-fill text-primary"
+                      role="button"
+                      :title="obtenerNotaDoc(doc.tipoDocumento)"
+                      style="cursor: pointer; font-size: 0.9rem;"
+                    ></i>
+                  </div>
                   <span class="badge" :class="obtenerEstadoDoc(doc.fVencimiento).clase">
                     {{ obtenerEstadoDoc(doc.fVencimiento).texto }}
                   </span>
                 </div>
-                <input v-if="!doc.cargado"
-                  type="file" class="form-control form-control-sm mb-2" accept=".pdf,.png,.jpg" @change="procesarArchivo($event, index)" />
-                <div v-else class="alert alert-success py-2 mb-2 d-flex justify-content-between align-items-center">
-                  <span class="small">Archivo cargado</span>
+                
+                <div v-if="!doc.cargado" class="mb-2">
+                  <label class="form-label small text-muted">
+                    Archivo (PDF o Imagen)
+                    <!-- <span v-if="doc.urlArchivo" class="text-success ms-1">✓ Registrado</span> -->
+                  </label>
+                  <input 
+                    type="file" 
+                    class="form-control form-control-sm" 
+                    accept=".pdf,.png,.jpg,.jpeg" 
+                    @change="procesarArchivo($event, index)"
+                  />
                 </div>
+
+                <div v-else class="py-1 mb-2 d-flex justify-content-between align-items-center gap-2">
+                  <div class="alert alert-success d-flex align-items-center mb-0 py-1 px-2 gap-1 w-100" role="alert">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span class="small">Archivo cargado</span>
+                  </div>
+                  
+                  <button v-if="doc.cargado" 
+                    type="button" 
+                    class="btn btn-secondary py-1 px-2"
+                    @click="actuazlizarArchivo(index)"
+                  >
+                    <i class="bi bi-pencil me-1"></i>
+                  </button>
+                </div>
+
                 <label class="form-label text-muted small mb-1">F. Emisión</label>
                 <input type="date" class="form-control form-control-sm mb-2" v-model="doc.fEmision" :readonly="doc.cargado" />
                 <label class="form-label text-muted small mb-1">F. Vencimiento</label>
                 <input v-if="requiereVencimiento(doc.tipoDocumento)" type="date" class="form-control form-control-sm" v-model="doc.fVencimiento" :readonly="doc.cargado" />
                 <input v-else type="text" class="form-control form-control-sm" value="No Aplica" disabled />
-                <button v-if="doc.cargado" 
-                  type="button" 
-                  class="btn btn-sm btn-secondary mt-2"
-                  @click="actuazlizarArchivo(index)"
-                >
-                  <i class="bi bi-arrow-repeat me-1"></i> Actualizar
-                </button>
               </div>
             </div>
 
