@@ -48,6 +48,8 @@ const actualizarDocumentos = () => {
 const cargarDatosProveedor = async () => {
   if (!empresa.value.rif) return;
 
+  empresaStore.limpiarEmpresa();
+
   empresa.value.razonSocial = '';
   empresa.value.servicio = '';
 
@@ -60,8 +62,6 @@ const cargarDatosProveedor = async () => {
     empresa.value = { ...empresa.value, ...data };
     
     actualizarDocumentos();
-
-    empresaStore.limpiarEmpresa();
     empresaStore.setEmpresa(empresa.value);
   } catch (error) {
     errorMensaje.value = 'No se pudo obtener la información de la empresa.';

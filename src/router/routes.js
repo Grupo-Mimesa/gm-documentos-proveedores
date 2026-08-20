@@ -1,5 +1,14 @@
 
 import DefaultLayout from '../layouts/DefaultLayout.vue'
+import { empresaStore } from '@/stores/empresaStore.js'
+
+const authGuard = (to, from, next) => {
+  
+  const isValidated = empresaStore.datos.servicio && empresaStore.datos.rif && empresaStore.datos.razonSocial;
+  if (!isValidated) return next('/empresa')
+  
+  next()
+}
 
 const routes = [
   {
@@ -18,12 +27,14 @@ const routes = [
       {
         path: 'empleados',
         name: 'Empleados',
-        component: () => import('../views/EmpleadosView.vue')
+        component: () => import('../views/EmpleadosView.vue'),
+        beforeEnter: authGuard
       },
       {
         path: 'vehiculos',
         name: 'Vehiculos',
-        component: () => import('../views/VehiculosView.vue')
+        component: () => import('../views/VehiculosView.vue'),
+        beforeEnter: authGuard
       }
     ]
   }
