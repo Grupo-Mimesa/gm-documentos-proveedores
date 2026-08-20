@@ -181,7 +181,7 @@ const validarFormulario = () => {
   }
 
   formEmpleado.documentos.forEach((doc) => {
-    if (doc.actualizar && doc.archivo && (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento)))) {
+    if (doc.actualizar && doc.archivo.base64 && (!doc.fEmision || (!doc.fVencimiento &&  requiereVencimiento(doc.tipoDocumento)))) {
       alert(`Por favor complete las fechas para el documento: ${obtenerEtiquetaDoc(doc.tipoDocumento)}`)
       return false
     }
