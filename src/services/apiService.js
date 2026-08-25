@@ -1,4 +1,5 @@
-import { agruparEmpleados, agruparVehiculos } from '../utils/agruparEmpleados.js'
+import { agruparEmpleados } from '../utils/agruparEmpleados.js'
+import { agruparVehiculos } from '../utils/agruparVehiculos.js'
 
 /**
  * Obtiene los datos generales y matriz documental del proveedor según su RIF.
