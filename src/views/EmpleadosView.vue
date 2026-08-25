@@ -244,8 +244,8 @@ watch(() => empresaStore.datos?.rif, () => {
                 <td>{{ c.cedula }}</td>
                 <td class="fw-bold">{{ c.nombre }}</td>
                 <td>
-                  <span class="badge" :class="estadoDocumentacion(c) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
-                    {{ estadoDocumentacion(c) }}
+                  <span class="badge" :class="estadoDocumentacion(c, CONFIG_DOCUMENTOS) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
+                    {{ estadoDocumentacion(c, CONFIG_DOCUMENTOS) }}
                   </span>
                 </td>
                 <td class="text-end">

@@ -245,8 +245,8 @@ watch(() => empresaStore.datos?.rif, () => {
                 <td class="fw-bold">{{ v.placa }}</td>
                 <td>{{ v.tipoVehiculo }}</td>
                 <td>
-                  <span class="badge" :class="estadoDocumentacion(v) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
-                    {{ estadoDocumentacion(v) }}
+                  <span class="badge" :class="estadoDocumentacion(v, CONFIG_DOCUMENTOS) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
+                    {{ estadoDocumentacion(v, CONFIG_DOCUMENTOS) }}
                   </span>
                 </td>
                 <td class="text-end">

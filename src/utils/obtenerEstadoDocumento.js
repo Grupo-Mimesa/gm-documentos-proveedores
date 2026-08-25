@@ -11,7 +11,7 @@ export const obtenerEstadoDoc = (fechaVenc) => {
   return { texto: 'Válido', clase: 'bg-success' }
 }
 
-export const estadoDocumentacion = (registro) => {
+export const estadoDocumentacion = (registro, CONFIG_DOCUMENTOS) => {
   if (!registro || !registro.documentos) return 'Incompleto'
 
   const todosCompletos = CONFIG_DOCUMENTOS.every(cfg => {
