@@ -292,12 +292,12 @@ watch(() => empresaStore.datos?.rif, () => {
           </div>
           <form @submit.prevent="guardarVehiculo">
             <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-              <div class="row g-3 mb-4 bg-light p-3 rounded border">
-                <div class="col-md-6">
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
                   <label class="form-label fw-bold">Placa del Vehículo</label>
                   <input v-model="formVehiculo.placa" type="text" class="form-control text-uppercase" placeholder="Ej: A12BC3D" required />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-bold">Tipo de Unidad</label>
                   <input v-model="formVehiculo.tipoVehiculo" type="text" class="form-control" placeholder="" required />
                 </div>
@@ -305,12 +305,12 @@ watch(() => empresaStore.datos?.rif, () => {
 
               <h6 class="fw-bold mb-3 border-bottom pb-2">Documentos Requeridos</h6>
               <div class="row g-3">
-                <div class="col-md-4"
+                <div class="col-md-6"
                   v-for="(doc, index) in formVehiculo.documentos" 
                   :key="doc.tipoDocumento"
                 >
-                  <div class="card p-3 border rounded bg-light h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="card h-100 shadow-sm border">
+                    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-start">
                       <div class="d-flex align-items-start gap-2">
                         <span>{{ obtenerEtiquetaDoc(doc.tipoDocumento) }}</span>
                         <i
@@ -326,11 +326,7 @@ watch(() => empresaStore.datos?.rif, () => {
                         {{ obtenerEstadoDoc(doc.fVencimiento).texto }}
                       </span>
                     </div>
-                    <input type="file" class="form-control form-control-sm mb-2" accept=".pdf,.jpg,.png" @change="procesarArchivo($event, 0)" required />
-                    <label class="form-label text-muted style-sublabel mb-1">F. Emisión</label>
-                    <input type="date" class="form-control form-control-sm" v-model="formVehiculo.documentos[0].fechaEmision" required />
-                  </div>
-                  <div class="card-body">
+                    <div class="card-body">
                       <div v-if="!doc.cargado" class="mb-2">
                         <label class="form-label small text-muted">
                           Archivo (PDF o Imagen)
@@ -383,8 +379,8 @@ watch(() => empresaStore.datos?.rif, () => {
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
-
               </div>
             </div>
 

@@ -15,6 +15,7 @@
         "npm:@vitejs/plugin-vue@^6.0.8",
         "npm:bootstrap-icons@^1.13.1",
         "npm:bootstrap@^5.3.8",
+        "npm:netlify-cli@^23.15.1",
         "npm:vite@^8.2.0",
         "npm:vue-router@^5.2.0",
         "npm:vue@^3.5.40"
