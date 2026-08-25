@@ -7,15 +7,15 @@ export const agruparVehiculos = (listaPlana = []) => {
   const mapaVehiculos = new Map()
 
   listaPlana.forEach((registro) => {
-    const cedula = registro.cedula
+    const placa = registro.placa
 
-    if (!cedula) return // Ignorar si no hay identificador principal
+    if (!placa) return // Ignorar si no hay identificador principal
 
     // 1. Si el vehículo aún no existe en el Map, lo creamos
-    if (!mapaVehiculos.has(cedula)) {
-      mapaVehiculos.set(cedula, {
-        placa: registro.cedula,
-        tipoVehiculo: registro.nombre,
+    if (!mapaVehiculos.has(placa)) {
+      mapaVehiculos.set(placa, {
+        placa: registro.placa,
+        tipoVehiculo: registro.tipoVehiculo || '',
         proveedorRif: registro.proveedorRif || '',
         documentos: []
       })
@@ -23,7 +23,7 @@ export const agruparVehiculos = (listaPlana = []) => {
 
     // 2. Anidamos los detalles del documento dentro del vehículo correspondiente
     if (registro.tipoDocumento) {
-      mapaVehiculos.get(cedula).documentos.push({
+      mapaVehiculos.get(placa).documentos.push({
         id: registro.id || null,
         tipoDocumento: registro.tipoDocumento,
         fEmision: registro.fEmision || '',
