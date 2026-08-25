@@ -281,7 +281,7 @@ watch(() => empresaStore.datos?.rif, () => {
       </div>
     </div>
 
-    <div class="modal fade" id="modalVehiculo" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalVehiculo" tabindex="-1" ref="modalElementRef" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header bg-dark text-white">
