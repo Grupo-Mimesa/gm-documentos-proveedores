@@ -7,7 +7,7 @@ import {
   guardarEmpleado as apiGuardarEmpleado, 
   eliminarEmpleado as apiEliminarEmpleado
 } from '@/services/apiService.js'
-import { obtenerEstadoDoc } from '@/utils/obtenerEstadoDocumento.js'
+import { obtenerEstadoDoc, estadoDocumentacion } from '@/utils/obtenerEstadoDocumento.js'
 import { aBooleano } from '@/utils/formatters'
 import { TIPO_DOCUMENTOS_EMPLEADOS } from '@/constants'
 
@@ -51,18 +51,6 @@ const cargarEmpleados = async () => {
   } finally {
     cargando.value = false
   }
-}
-
-const estadoDocumentacion = (cedula) => {
-  const empleado = empleados.value.find(e => e.cedula === cedula)
-  if (!empleado || !empleado.documentos) return 'Incompleto'
-
-  const todosCompletos = CONFIG_DOCUMENTOS.every(cfg => {
-    const doc = empleado.documentos.find(d => d.tipoDocumento === cfg.Value)
-    return doc && doc.cargado && doc.fEmision && (!cfg.requiereVencimiento || doc.fVencimiento)
-  })
-
-  return todosCompletos ? 'Completo' : 'Incompleto'
 }
 
 const obtenerEtiquetaDoc = (tipo) => CONFIG_DOCUMENTOS.find(c => c.Value === tipo)?.label || tipo
@@ -165,8 +153,8 @@ const eliminarEmpleado = async (emp) => {
   try {
     await apiEliminarEmpleado(emp)
 
-    // Remover localmente
     empleados.value = empleados.value.filter(e => e.cedula !== emp.cedula)
+
     alert('Empleado eliminado con éxito.')
   } catch (err) {
     console.error(err)
@@ -204,7 +192,7 @@ const guardarEmpleado = async () => {
     alert('Empleado guardado correctamente.')
   } catch (err) {
     console.error(err)
-    alert('Ocurrió un error al guardar.')
+    alert('Ocurrió un error al guardar el empleado.')
   } finally {
     guardando.value = false
     cerrarModal()
@@ -256,8 +244,8 @@ watch(() => empresaStore.datos?.rif, () => {
                 <td>{{ c.cedula }}</td>
                 <td class="fw-bold">{{ c.nombre }}</td>
                 <td>
-                  <span class="badge" :class="estadoDocumentacion(c.cedula) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
-                    {{ estadoDocumentacion(c.cedula) }}
+                  <span class="badge" :class="estadoDocumentacion(c) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
+                    {{ estadoDocumentacion(c) }}
                   </span>
                 </td>
                 <td class="text-end">
@@ -397,7 +385,7 @@ watch(() => empresaStore.datos?.rif, () => {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" :disabled="guardando">
+              <button type="submit" class="btn btn-primary" :disabled="guardando">
                 <span v-if="guardando" class="spinner-border spinner-border-sm me-1"></span>
                 {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
               </button>

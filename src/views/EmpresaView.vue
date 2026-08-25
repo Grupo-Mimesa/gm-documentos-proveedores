@@ -141,33 +141,25 @@ const validarFormulario = () => {
   return true
 }
 
-/**
- * Adapta el payload para el backend sin alterar el objeto reactivo original.
- * @param {Object} formulario - Estado reactivo original de la vista.
- * @returns {Object} Copia del objeto formateada con los documentos como Array.
- */
-function prepararPayload(formulario) {
-  const { documentos, ...datosGenerales } = formulario;
-
-  const documentosArray = Object.values(documentos || {});
-
-  return {
-    ...datosGenerales,
-    documentos: documentosArray
-  };
-}
-
 const guardarEmpresa = async () => {
   if (!validarFormulario()) return;
 
   guardando.value = true
+
+  const payload = { ... empresa.value }
+  payload.documentos2 = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
+
   try {
-    //const payloadParaEnviar = prepararPayload(empresa.value);
-    empresa.value.documentos2 = empresa.value.documentos2.filter(doc => doc.cargado || doc.archivo.base64)
-    const respuesta = await guardarProveedor(empresa.value);
+    await guardarProveedor(payload);
     alert('Datos de la empresa guardados exitosamente')
     
-    cargarDatosProveedor()
+    empresa.value.documentos2.forEach(doc => {
+      if (doc.archivo.base64) {
+        doc.cargado = true
+        doc.actualizar = false,
+        doc.archivo = { nombre: '', base64: '' }
+      }
+    })
   } catch (error) {
     console.error(error)
     alert('Ocurrió un error al guardar los datos de la empresa')

@@ -10,3 +10,14 @@ export const obtenerEstadoDoc = (fechaVenc) => {
   if (diffDias <= 30) return { texto: 'Por Vencer', clase: 'bg-warning text-dark' }
   return { texto: 'Válido', clase: 'bg-success' }
 }
+
+export const estadoDocumentacion = (registro) => {
+  if (!registro || !registro.documentos) return 'Incompleto'
+
+  const todosCompletos = CONFIG_DOCUMENTOS.every(cfg => {
+    const doc = registro.documentos.find(d => d.tipoDocumento === cfg.Value)
+    return doc && doc.cargado && doc.fEmision && (!cfg.requiereVencimiento || doc.fVencimiento)
+  })
+
+  return todosCompletos ? 'Completo' : 'Incompleto'
+}
