@@ -1,4 +1,4 @@
-import { agruparEmpleados } from '../utils/agruparEmpleados.js'
+import { agruparEmpleados, agruparVehiculos } from '../utils/agruparEmpleados.js'
 
 /**
  * Obtiene los datos generales y matriz documental del proveedor según su RIF.
@@ -122,6 +122,78 @@ export const eliminarEmpleado = async (datosEmpleado) => {
     return await response.json()
   } catch (error) {
     console.error('Error en apiService.eliminarEmpleado:', error)
+    throw error;
+  }
+}
+
+/**
+ * Obtiene la lista de vehículos de una empresa por su RIF
+ * @param {string} rif - Identificador RIF de la empresa
+ */
+export const obtenerVehiculos = async (rif) => {
+  if (!rif) throw new Error('Se requiere un RIF válido para consultar vehículos.')
+
+  try {
+    const response = await fetch(`/.netlify/functions/obtener-vehiculos?rif=${encodeURIComponent(rif)}`)
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || `Error en la petición: ${response.status}`)
+    }
+
+    const datosPlanos = await response.json()
+  
+    return agruparVehiculos(datosPlanos)
+  } catch (error) {
+    console.error('Error en apiService.obtenerVehiculos:', error)
+    throw error;
+  }
+}
+
+/**
+ * Guarda o actualiza un vehículo y su matriz de documentos
+ * @param {Object} datosVehiculo - Datos del formulario y sus documentos
+ */
+export const guardarVehiculo = async (datosVehiculo) => {
+  const response = await fetch('/.netlify/functions/guardar-vehiculo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datosVehiculo)
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || `Error al guardar vehículo: ${response.status}`)
+  }
+
+  return await response.json()
+}
+
+/**
+ * Elimina un vehículo de la base de datos
+ * @param {Object} datosVehiculo - Objeto con la información del vehículo a eliminar
+ */
+export const eliminarVehiculo = async (datosVehiculo) => {
+  if (!datosVehiculo.proveedorRif) throw new Error('Se requiere un RIF válido para consultar vehículos.')
+
+  try {
+    const response = await fetch('/.netlify/functions/eliminar-vehiculo', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        placa: datosVehiculo.placa,
+        proveedorRif: datosVehiculo.proveedorRif
+      })
+    })
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || `Error en la petición: ${response.status}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error en apiService.eliminarVehiculo:', error)
     throw error;
   }
 }
