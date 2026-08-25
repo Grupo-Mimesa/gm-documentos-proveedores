@@ -89,9 +89,13 @@ export const TIPO_DOCUMENTOS_EMPLEADOS = [
 ]
 
 export const TIPO_DOCUMENTOS_VEHICULOS = [
-  { service: ['Transporte'], label: 'Seguro del Vehículo', Value: 'Seguro del vehículo', requiereVencimiento: true },
-  { service: ['Transporte'], label: 'Responsabilidad Civil del Vehículo', Value: 'RCV', requiereVencimiento: true },
+  { service: ['Transporte'], label: 'Título de Propiedad', Value: 'Título de propiedad de chuto/remolque', requiereVencimiento: false },
+  { service: ['Transporte'], label: 'Carnet de Circulación', Value: 'Carnet de circulación', requiereVencimiento: false },
+  { service: ['Transporte'], label: 'Poliza de Seguro del Vehículo', Value: 'Poliza de seguro', requiereVencimiento: true },
+  { service: ['Transporte'], label: 'Responsabilidad Civil del Vehículo', Value: 'Responsabilidad civil', requiereVencimiento: true },
   { service: ['Transporte'], label: 'Plan de Mantenimiento del Vehículo', Value: 'Plan de mantenimiento del vehículo', requiereVencimiento: true },
-
+  { service: ['Transporte'], label: 'Permiso Sanitario', Value: 'Permiso sanitario', requiereVencimiento: false },
+  { service: ['Transporte'], label: 'Certificado de Fumigación', Value: 'Certificado de fumigación', requiereVencimiento: false },
+  { service: ['Transporte'], label: 'Registro de Responsabilidad del Vehículo', Value: 'Registro de responsabilidad del vehículo', requiereVencimiento: false },
   { service: ['Ambientales No Peligrosos'], label: 'Autorización para el transporte de desechos', Value: 'AUTORIZACIÓN PARA EL TRANSPORTE DE DESECHOS', note:'Autorización de los vehículos para realizar el transporte de desechos peligrosos/no peligrosos ante la autoridad competente', requiereVencimiento: false },
 ]
