@@ -17,6 +17,9 @@ export const agruparEmpleados = (listaPlana = []) => {
         cedula: registro.cedula,
         nombre: registro.nombre,
         proveedorRif: registro.proveedorRif || '',
+        localidad: registro.localidad.map((loc) => ({
+          Value: typeof loc === 'object' ? loc.Value : loc
+        })),
         documentos: []
       })
     }

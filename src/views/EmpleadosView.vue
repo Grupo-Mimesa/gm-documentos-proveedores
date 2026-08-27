@@ -9,7 +9,8 @@ import {
 } from '@/services/apiService.js'
 import { obtenerEstadoDoc, estadoDocumentacion } from '@/utils/obtenerEstadoDocumento.js'
 import { aBooleano } from '@/utils/formatters'
-import { TIPO_DOCUMENTOS_EMPLEADOS } from '@/constants'
+import { LOCALIDADES, TIPO_DOCUMENTOS_EMPLEADOS } from '@/constants'
+import DropdownMultiSelect from '@/components/DropdownMultiSelect.vue'
 
 const CONFIG_DOCUMENTOS = TIPO_DOCUMENTOS_EMPLEADOS.filter(doc => {
   return doc.service.includes(empresaStore.datos?.servicio)
@@ -28,6 +29,7 @@ const formEmpleado = reactive({
   cedula: '',
   nombre: '',
   proveedorRif: '',
+  localidad: [],
   documentos: []
 })
 
@@ -107,6 +109,7 @@ const abrirModalNuevo = () => {
   formEmpleado.cedula = ''
   formEmpleado.nombre = ''
   formEmpleado.proveedorRif = empresaStore.datos?.rif || ''
+  formEmpleado.localidad = []
   formEmpleado.documentos = estructurarDocumentosVacios()
   modalInstance?.show()
 }
@@ -121,6 +124,7 @@ const editarEmpleado = (emp) => {
   formEmpleado.cedula = emp.cedula
   formEmpleado.nombre = `${emp.nombre || ''}`.trim().toUpperCase()
   formEmpleado.proveedorRif = emp.proveedorRif || empresaStore.datos?.rif
+  formEmpleado.localidad = emp.localidad
   modalLabel.value = emp.cedula + ' - ' + emp.nombre
   // Fusionar los documentos existentes con la plantilla maestra
   formEmpleado.documentos = CONFIG_DOCUMENTOS.map(cfg => {
@@ -185,7 +189,7 @@ const guardarEmpleado = async () => {
 
   const payload = { ...formEmpleado }
   payload.nombre = payload.nombre.trim().toUpperCase()
-  payload.documentos = payload.documentos.filter(doc => doc.archivo.base64)
+  payload.documentos = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
 
   try {
     await apiGuardarEmpleado({payload: payload})
@@ -300,6 +304,14 @@ watch(() => empresaStore.datos?.rif, () => {
                   <label class="form-label fw-bold">Nombre</label>
                   <input v-model="formEmpleado.nombre" type="text" class="form-control" required />
                 </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Localidades</label>
+                  <DropdownMultiSelect
+                    v-model="formEmpleado.localidad"
+                    :opciones="LOCALIDADES"
+                    placeholder="Seleccione las sedes..."
+                  />
+                </div>
               </div>
 
               <h6 class="fw-bold mb-3 border-bottom pb-2">Documentos Requeridos</h6>
@@ -385,7 +397,7 @@ watch(() => empresaStore.datos?.rif, () => {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary" :disabled="guardando">
+              <button type="submit" class="btn btn-primary" :disabled="guardando || !formEmpleado.cedula || !formEmpleado.nombre">
                 <span v-if="guardando" class="spinner-border spinner-border-sm me-1"></span>
                 {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
               </button>
