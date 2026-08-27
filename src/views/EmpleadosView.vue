@@ -239,6 +239,7 @@ watch(() => empresaStore.datos?.rif, () => {
               <tr>
                 <th>Cédula</th>
                 <th>Nombre Completo</th>
+                <th>Localidad</th>
                 <th>Estado Documentación</th>
                 <th class="text-end">Acciones</th>
               </tr>
@@ -247,6 +248,7 @@ watch(() => empresaStore.datos?.rif, () => {
               <tr v-for="c in empleados" :key="c.cedula">
                 <td>{{ c.cedula }}</td>
                 <td class="fw-bold">{{ c.nombre }}</td>
+                <td>{{ c.localidad.map(l => (typeof l.Value === "string" ? l.Value : "")).join("/") }}</td>
                 <td>
                   <span class="badge" :class="estadoDocumentacion(c, CONFIG_DOCUMENTOS) === 'Completo' ? 'bg-success' : 'bg-warning text-dark'">
                     {{ estadoDocumentacion(c, CONFIG_DOCUMENTOS) }}
