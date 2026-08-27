@@ -147,7 +147,7 @@ const guardarEmpresa = async () => {
   guardando.value = true
 
   const payload = { ... empresa.value }
-  payload.documentos2 = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
+  payload.documentos2 = payload.documentos2.filter(doc => doc.archivo.base64)
 
   try {
     await guardarProveedor(payload);
@@ -160,6 +160,8 @@ const guardarEmpresa = async () => {
         doc.archivo = { nombre: '', base64: '' }
       }
     })
+
+    empresaStore.setEmpresa(empresa.value);
   } catch (error) {
     console.error(error)
     alert('Ocurrió un error al guardar los datos de la empresa')
