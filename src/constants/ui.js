@@ -1,23 +1,32 @@
+export const LOCALIDADES = [
+  { Label: 'Catia La Mar', Value: 'Catia La Mar' },
+  { Label: 'La Encrucijada', Value: 'La Encrucijada' },
+  { Label: 'Los Olivitos', Value: 'Los Olivitos' },
+  { Label: 'Valencia', Value: 'Valencia' },
+  { Label: 'Parque Cristal', Value: 'Parque Cristal' },
+]
+
 export const TIPO_PROVEEDOR = [
-  "Transporte",
-  "Contratista"
+  'Transporte',
+  'Contratista'
 ]
 
 export const TIPO_SERVICIOS = [
-  { value: "Fijos", label: "Fijos" },
-  { value: "Eventuales", label: "Eventuales" },
-  { value: "Ambientales Peligrosos", label: "Ambientales - Desechos Peligrosos" },
-  { value: "Ambientales No Peligrosos", label: "Ambientales - Desechos No Peligrosos" },
-  { value: "Transporte", label: "Transporte" },
-  { value: "Emergencia", label: "Emergencia" }
+  { value: 'Fijos', label: 'Fijos' },
+  { value: 'Eventuales', label: 'Eventuales' },
+  { value: 'Ambientales Peligrosos', label: 'Ambientales - Desechos Peligrosos' },
+  { value: 'Ambientales No Peligrosos', label: 'Ambientales - Desechos No Peligrosos' },
+  { value: 'Transporte', label: 'Transporte' },
+  { value: 'Emergencia', label: 'Emergencia' }
 ]
 
 export const TIPO_DOCUMENTOS_EMPRESA = [
-  { service: ['Fijos', 'Eventuales', 'Ambientales Peligrosos', 'Ambientales No Peligrosos', 'Transporte', 'Emergencia'], label: 'RIF', Value: 'RIF', note: 'Registro de Información Fiscal', requiereVencimiento: true },
+  { service: ['Emergencia'], label: 'Carta de Exoneración de Responsabilidad y Compromiso', Value: 'Carta de Exoneración de Responsabilidad y Compromiso', requiereVencimiento: false },
+  { service: ['Fijos', 'Eventuales', 'Ambientales Peligrosos', 'Ambientales No Peligrosos', 'Transporte', 'Emergencia'], label: 'RIF', Value: 'RIF', note: 'Registro de Información Fiscal', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales', 'Transporte'], label: 'Cédula del Representante Legal', Value: 'C.I REPRESENTANTE LEGAL', requiereVencimiento: true },
   { service: ['Fijos', 'Eventuales', 'Transporte'], label: 'Registro Mercantil', Value: 'REGISTRO MERCANTIL', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Inscripción ante el IVSS', Value: 'IVSS', note: 'Forma 1401', requiereVencimiento: false },
-  { service: ['Fijos', 'Eventuales'], label: 'Número de Identificación Laboral (NIL)', Value: 'NIL', requiereVencimiento: false },
+  { service: ['Fijos', 'Eventuales'], label: 'NIL', Value: 'NIL', note: 'Número de Identificación Laboral', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Certificado electrónico de formalización de Registro de Centro de Trabajo para las Declaraciones en Línea ante INPSASEL', Value: 'INPSASEL', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Póliza de Responsabilidad Patronal', Value: 'POLIZA RESPONSABILIDAD PATRONAL', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Póliza de responsabilidad empresarial', Value: 'PÓLIZA DE RESPONSABILIDAD EMPRESARIAL', note:'', requiereVencimiento: false },
@@ -27,7 +36,7 @@ export const TIPO_DOCUMENTOS_EMPRESA = [
   { service: ['Fijos'], label: 'Contrato con Servicio de Salud Ocupacional', Value: 'CONTRATO CON SERVICIO DE SALUD OCUPACIONAL', note:'Conformación:  -Registro de profesionales que lo conforman.  -Estructura Organizacional del Servicio.  -Plan de trabajo del Servicio.  -Horarios de Atención.  -Listado De Personas que Conforman el Servicio', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Contrato con Servicio de Ambulancia para traslados en caso de accidentes de trabajo', Value: 'CONTRATO CON SERVICIO DE AMBULANCIA PARA TRASLADOS EN CASO DE ACCIDENTES DE TRABAJO', note:'Sólo aplica a Localidades que no tienen ambulancia o están en zonas muy lejanas', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Propuesta de Programa de Seguridad y Salud en el Trabajo (PSST)', Value: 'PROPUESTA DE PROGRAMA DE SEGURIDAD Y SALUD EN EL TRABAJO (PSST)', note:'Según Norma Técnica NT 04-2023 Firmado y aprobado por el CSSL y Empresa. *Anexo: se debe integrar al programa, lo concerniente a los temas de Bioseguridad derivados del Covid-19', requiereVencimiento: false },
-  { service: ['Fijos', 'Eventuales'], label: 'Plan para el Control de Emergencia', Value: 'PLAN PARA EL CONTROL DE EMERGENCIA', note:'Según Norma Covenin 2226-90. *Debe ir anexo al Programa de Seguridad y Salud en el Trabajo Pto. 12).', requiereVencimiento: false },
+  { service: ['Fijos', 'Eventuales'], label: 'Plan para el Control de Emergencia', Value: 'PLAN PARA EL CONTROL DE EMERGENCIA', note:'Según Norma Covenin 2226-90. *Debe ir anexo al Programa de Seguridad y Salud en el Trabajo', requiereVencimiento: false },
   { service: ['Fijos', 'Eventuales'], label: 'Procedimientos específicos para la pronta respuesta en caso de presentarse los siguientes escenarios, máximo 4 hojas:', Value: 'PROCEDIMIENTOS ESPECÍFICOS PARA LA PRONTA RESPUESTA EN CASO DE PRESENTARSE LOS SIGUIENTES ESCENARIOS, MÁXIMO 4 HOJAS:', note:'-Accidente de trabajo.  -Enfermedad común.  -Contingencia por Conmoción Nacional', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Registro vigente de Delegados de Prevención ante el INPSASEL para la Localidad', Value: 'REGISTRO VIGENTE DE DELEGADOS DE PREVENCIÓN ANTE EL INPSASEL PARA LA LOCALIDAD', note:'', requiereVencimiento: false },
   { service: ['Fijos'], label: 'Registro del Comité de Seguridad y Salud Laboral ante el INPSASEL para la Localidad', Value: 'REGISTRO DEL COMITÉ DE SEGURIDAD Y SALUD LABORAL ANTE EL INPSASEL PARA LA LOCALIDAD', note:'', requiereVencimiento: false },
@@ -50,12 +59,11 @@ export const TIPO_DOCUMENTOS_EMPRESA = [
   { service: ['Ambientales No Peligrosos'], label: 'ROTC', Value: 'ROTC', note:'Registro como operadores de transporte de carga', requiereVencimiento: false },
   { service: ['Ambientales No Peligrosos'], label: 'Permiso RUNPA emitido por CORPOEZ', Value: 'PERMISO RUNPA EMITIDO POR CORPOEZ', note:'Para los casos de Material Estratégico (Chatarra)', requiereVencimiento: false },
   { service: ['Ambientales No Peligrosos'], label: 'Guía de Movilización', Value: 'GUÍA DE MOVILIZACIÓN', note:'Para los casos de Material Estratégico (Chatarra)', requiereVencimiento: false },
+  { service: ['Emergencia'], label: 'Procedimientos de Emergencia', Value: 'Procedimientos de Emergencia', note: 'En caso de: Accidente de trabajo/Enfermedad común', requiereVencimiento: true }
   //{ service: ['Fijos'], label: '', Value: '', requiereVencimiento: false },
 ]
 
 export const TIPO_DOCUMENTOS_EMPLEADOS = [
-  { key: 'cartaExoneracion', type: 'Contratista', 
-    service: ['Emergencia'], label: 'Carta de Exoneración de Responsabilidad y Compromiso', Value: 'Carta de Exoneración de Responsabilidad y Compromiso', requiereVencimiento: false },
   { key: 'cedulaDoc', type: 'Todos', 
     service: ['Fijos', 'Eventuales', 'Ambientales Peligrosos', 'Ambientales No Peligrosos', 'Transporte', 'Emergencia'], label: 'Cédula de Identidad', Value: 'Cedula de identidad', requiereVencimiento: true },
   { key: 'ivss', type: 'Contratista', 
@@ -83,9 +91,7 @@ export const TIPO_DOCUMENTOS_EMPLEADOS = [
   { key: 'licencia', type: 'Transporte', 
     service: ['Transporte'], label: 'Licencia de Conducir', Value: 'Licencia de conducir', requiereVencimiento: true },
   { key: 'certVial', type: 'Transporte', 
-    service: ['Transporte'], label: 'Certificado Médico Víal', Value: 'Certificado médico', requiereVencimiento: true },
-  { key: 'procEmergencia', type: 'Contratista', 
-    service: ['Emergencia'], label: 'Procedimientos de Emergencia', Value: 'Procedimientos de Emergencia', note: 'En caso de: Accidente de trabajo/Enfermedad común', requiereVencimiento: true }
+    service: ['Transporte'], label: 'Certificado Médico Víal', Value: 'Certificado médico', requiereVencimiento: true }
 ]
 
 export const TIPO_DOCUMENTOS_VEHICULOS = [
