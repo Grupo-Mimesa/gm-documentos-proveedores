@@ -3,7 +3,8 @@ import { reactive, ref, onMounted, watch } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { empresaStore } from '@/stores/empresaStore.js'
 import { 
-  obtenerEmpleados, 
+  obtenerEmpleados,
+  obtenerDocumentoEmpleado,
   guardarEmpleado as apiGuardarEmpleado, 
   eliminarEmpleado as apiEliminarEmpleado
 } from '@/services/apiService.js'
@@ -74,6 +75,14 @@ const estructurarDocumentosVacios = () => {
     }
     //urlArchivo: ''
   }))
+}
+
+const verArchivo = async (id) => {
+
+  const blob = await obtenerDocumentoEmpleado(id);
+  const url = URL.createObjectURL(blob);
+
+  window.open(url, '_blank');
 }
 
 const actualizarArchivo = (index) => {
@@ -362,13 +371,21 @@ watch(() => empresaStore.datos?.rif, () => {
                           <i class="bi bi-check-circle-fill"></i>
                           <span class="small">Archivo cargado</span>
                         </div>
+
+                        <button v-if="doc.cargado" 
+                          type="button" 
+                          class="btn btn-primary py-1 px-2"
+                          @click="verArchivo(doc.id)"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
                         
                         <button v-if="doc.cargado" 
                           type="button" 
-                          class="btn btn-secondary py-1 px-2"
+                          class="btn btn-warning py-1 px-2"
                           @click="actualizarArchivo(index)"
                         >
-                          <i class="bi bi-pencil me-1"></i>
+                          <i class="bi bi-pencil"></i>
                         </button>
                       </div>
 

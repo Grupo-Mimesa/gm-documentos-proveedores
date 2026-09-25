@@ -95,6 +95,22 @@ export const obtenerEmpleados = async (rif) => {
   }
 }
 
+export async function obtenerDocumentoEmpleado(id) {
+  try {
+    const response = await fetch(`/.netlify/functions/obtener-documento-empleado?id=${encodeURIComponent(id)}`);
+
+    if (!response.ok) {
+      const errorPayload = await response.json().catch(() => ({}));
+      throw new Error(errorPayload.error || `Error de red (${response.status})`);
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Error en apiService (obtenerDocumentoEmpleado):', error);
+    throw error;
+  }
+}
+
 /**
  * Guarda o actualiza un empleado/conductor y su matriz de documentos
  * @param {Object} datosEmpleado - Datos del formulario y sus documentos
