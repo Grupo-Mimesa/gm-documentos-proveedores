@@ -27,6 +27,22 @@ export async function obtenerProveedor(rif, ab) {
   }
 }
 
+export async function obtenerDocumentoProveedor(id) {
+  try {
+    const response = await fetch(`/.netlify/functions/obtener-documento-proveedor?id=${encodeURIComponent(id)}`);
+
+    if (!response.ok) {
+      const errorPayload = await response.json().catch(() => ({}));
+      throw new Error(errorPayload.error || `Error de red (${response.status})`);
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Error en apiService (obtenerDocumentoProveedor):', error);
+    throw error;
+  }
+}
+
 /**
  * Envía la información general y los documentos del proveedor para actualización.
  * @param {Object} datosProveedor - Objeto con la información a guardar (debe incluir rif).

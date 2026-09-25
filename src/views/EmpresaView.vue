@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { empresaStore } from '@/stores/empresaStore.js'
-import { obtenerProveedor, guardarProveedor } from '@/services/apiService';
+import { obtenerProveedor, obtenerDocumentoProveedor, guardarProveedor } from '@/services/apiService';
 import { obtenerEstadoDoc } from '@/utils/obtenerEstadoDocumento.js';
 import { aBooleano } from '@/utils/formatters'
 import { TIPO_SERVICIOS, TIPO_DOCUMENTOS_EMPRESA } from '@/constants';
@@ -95,6 +95,14 @@ const estructurarDocumentosVacios = () => {
     }
     //urlArchivo: ''
   }))
+}
+
+const verArchivo = async (id) => {
+
+  const blob = await obtenerDocumentoProveedor(id);
+  const url = URL.createObjectURL(blob);
+
+  window.open(url, '_blank');
 }
 
 const actualizarArchivo = (index) => {
@@ -307,13 +315,21 @@ watch(() => empresa.value.servicio, () => {
                     <i class="bi bi-check-circle-fill"></i>
                     <span class="small">Archivo cargado</span>
                   </div>
+
+                  <button v-if="doc.cargado" 
+                    type="button" 
+                    class="btn btn-primary py-1 px-2"
+                    @click="verArchivo(doc.id)"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
                   
                   <button v-if="doc.cargado" 
                     type="button" 
-                    class="btn btn-secondary py-1 px-2"
+                    class="btn btn-warning py-1 px-2"
                     @click="actualizarArchivo(index)"
                   >
-                    <i class="bi bi-pencil me-1"></i>
+                    <i class="bi bi-pencil"></i>
                   </button>
                 </div>
 
