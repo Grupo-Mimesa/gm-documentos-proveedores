@@ -230,3 +230,19 @@ export const eliminarVehiculo = async (datosVehiculo) => {
     throw error;
   }
 }
+
+export async function obtenerDocumentoVehiculo(id) {
+  try {
+    const response = await fetch(`/.netlify/functions/obtener-documento-vehiculo?id=${encodeURIComponent(id)}`);
+
+    if (!response.ok) {
+      const errorPayload = await response.json().catch(() => ({}));
+      throw new Error(errorPayload.error || `Error de red (${response.status})`);
+    }
+
+    return await response.blob();
+  } catch (error) {
+    console.error('Error en apiService (obtenerDocumentoVehiculo):', error);
+    throw error;
+  }
+}

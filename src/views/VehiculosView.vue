@@ -4,6 +4,7 @@ import * as bootstrap from 'bootstrap'
 import { empresaStore } from '@/stores/empresaStore.js'
 import { 
   obtenerVehiculos, 
+  obtenerDocumentoVehiculo,
   guardarVehiculo as apiGuardarVehiculo, 
   eliminarVehiculo as apiEliminarVehiculo
 } from '@/services/apiService.js'
@@ -74,6 +75,14 @@ const estructurarDocumentosVacios = () => {
   }))
 }
 
+const verArchivo = async (id) => {
+
+  const blob = await obtenerDocumentoVehiculo(id);
+  const url = URL.createObjectURL(blob);
+
+  window.open(url, '_blank');
+}
+
 const actualizarArchivo = (index) => {
   formVehiculo.documentos[index].actualizar = true;
   formVehiculo.documentos[index].cargado = false;
@@ -82,7 +91,6 @@ const actualizarArchivo = (index) => {
   formVehiculo.documentos[index].fVencimiento = '';
 }
 
-// Convertidor genérico de archivos a Base64 para enviar a Power Automate
 const procesarArchivo = (event, index) => {
   const file = event.target.files[0]
   if (!file) return
@@ -186,7 +194,7 @@ const guardarVehiculo = async () => {
 
   const payload = { ...formVehiculo }
   payload.placa = payload.placa.trim().toUpperCase()
-  payload.documentos = payload.documentos.filter(doc => doc.archivo.base64)
+  payload.documentos = payload.documentos.filter(doc => doc.cargado || doc.archivo.base64)
 
   try {
     await apiGuardarVehiculo({payload: payload})
@@ -217,7 +225,7 @@ watch(() => empresaStore.datos?.rif, () => {
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h2><i class="bi bi-truck me-2"></i>Gestión de Vehículos</h2>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVehiculo">
+      <button class="btn btn-success" @click="abrirModalNuevo">
         <i class="bi bi-plus-circle me-1"></i> Registrar Vehículo
       </button>
     </div>
@@ -348,13 +356,21 @@ watch(() => empresaStore.datos?.rif, () => {
                           <i class="bi bi-check-circle-fill"></i>
                           <span class="small">Archivo cargado</span>
                         </div>
+
+                        <button v-if="doc.cargado" 
+                          type="button" 
+                          class="btn btn-primary py-1 px-2"
+                          @click="verArchivo(doc.id)"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
                         
                         <button v-if="doc.cargado" 
                           type="button" 
-                          class="btn btn-secondary py-1 px-2"
+                          class="btn btn-warning py-1 px-2"
                           @click="actualizarArchivo(index)"
                         >
-                          <i class="bi bi-pencil me-1"></i>
+                          <i class="bi bi-pencil"></i>
                         </button>
                       </div>
 
